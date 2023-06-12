@@ -198,6 +198,10 @@ def plant_library(request):
             json_data3 = data['data'][2]
             # context = {'species_list': species_list}
             print(json_data)
+            try :
+                t = json_data['image_links']['thumbnail']
+            except Exception:
+                t = "https://www.thermaxglobal.com/wp-content/uploads/2020/05/image-not-found.jpg"
             context = {
         'common_name': json_data['common_name'],
         'scientific_name': json_data['scientific_name'],
@@ -206,11 +210,10 @@ def plant_library(request):
         'watering': json_data['watering'],
         'sunlight': json_data['sunlight'],
         'image_links': {
-            'original_url': json_data['default_image']['original_url'],
-            'regular_url': json_data['default_image']['regular_url'],
-            'medium_url': json_data['default_image']['medium_url'],
-            'small_url': json_data['default_image']['small_url'],
-            'thumbnail': json_data['default_image']['thumbnail']
+            
+            'thumbnail': t
+            
+
         }}
             context1 = {
             'common_name': json_data['common_name'],
@@ -218,28 +221,17 @@ def plant_library(request):
             'other_name': json_data['other_name'],
             'cycle': json_data['cycle'],
             'watering': json_data['watering'],
-            'sunlight': json_data['sunlight'],
-            'image_links': {
-                'original_url': json_data['default_image']['original_url'],
-                'regular_url': json_data['default_image']['regular_url'],
-                'medium_url': json_data['default_image']['medium_url'],
-                'small_url': json_data['default_image']['small_url'],
-                'thumbnail': json_data['default_image']['thumbnail']
-            }}
+            'sunlight': json_data['sunlight']
+            }
+            
             context2 = {
             'common_name': json_data['common_name'],
             'scientific_name': json_data['scientific_name'],
             'other_name': json_data['other_name'],
             'cycle': json_data['cycle'],
             'watering': json_data['watering'],
-            'sunlight': json_data['sunlight'],
-            'image_links': {
-                'original_url': json_data['default_image']['original_url'],
-                'regular_url': json_data['default_image']['regular_url'],
-                'medium_url': json_data['default_image']['medium_url'],
-                'small_url': json_data['default_image']['small_url'],
-                'thumbnail': json_data['default_image']['thumbnail']
-            }
+            'sunlight': json_data['sunlight']
+           
         }
         except requests.exceptions.RequestException as e:
             # Handle API request errors

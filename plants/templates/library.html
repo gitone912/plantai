@@ -29,97 +29,109 @@
 </head>
 <body>
     <div class="container">
-        <h1>Search Results</h1>
-        
-        <div class="table-container">
-            <h2>Table 1</h2>
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th>Common Name</th>
-                        <th>Scientific Name</th>
-                        <th>Other Name</th>
-                        <th>Cycle</th>
-                        <th>Watering</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for species in species_list %}
-                        <tr>
-                            <td>{{ species.common_name }}</td>
-                            <td>{{ species.scientific_name }}</td>
-                            <td>{{ species.other_name }}</td>
-                            <td>{{ species.cycle }}</td>
-                            <td>{{ species.watering }}</td>
-                        </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-        </div>
-        
-        <div class="table-container">
-            <h2>Table 2</h2>
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th>Common Name</th>
-                        <th>Scientific Name</th>
-                        <th>Other Name</th>
-                        <th>Cycle</th>
-                        <th>Watering</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for species in species_list %}
-                        <tr>
-                            <td>{{ species.common_name }}</td>
-                            <td>{{ species.scientific_name }}</td>
-                            <td>{{ species.other_name }}</td>
-                            <td>{{ species.cycle }}</td>
-                            <td>{{ species.watering }}</td>
-                        </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-        </div>
-        
-        <div class="table-container">
-            <h2>Table 3</h2>
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th>Common Name</th>
-                        <th>Scientific Name</th>
-                        <th>Other Name</th>
-                        <th>Cycle</th>
-                        <th>Watering</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for species in species_list %}
-                        <tr>
-                            <td>{{ species.common_name }}</td>
-                            <td>{{ species.scientific_name }}</td>
-                            <td>{{ species.other_name }}</td>
-                            <td>{{ species.cycle }}</td>
-                            <td>{{ species.watering }}</td>
-                        </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-        </div>
-
-        <div class="image-container">
-            {% for species in species_list %}
-                <img src="{{ species.image_links.thumbnail }}" alt="Thumbnail Image">
-            {% endfor %}
-        </div>
-
+        <br>
+        <h2>Search plants</h2>
+        <hr>
+        <br>
         <form method="post" action="{% url 'plant_library' %}">
             {% csrf_token %}
             <input type="text" name="query" placeholder="Enter a search query">
             <button type="submit">Search</button>
         </form>
+        <br>
+        <hr>
+        
+        <div class="table-container">
+            
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Common Name</th>
+                        <th>Scientific Name</th>
+                        <th>Other Name</th>
+                        <th>Cycle</th>
+                        <th>Watering</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% if context %}
+                       
+                            <tr>
+                                <td>{{ context.common_name }}</td>
+                                <td>{{ context.scientific_name }}</td>
+                                <td>{{ context.other_name }}</td>
+                                <td>{{ context.cycle }}</td>
+                                <td>{{ context.watering }}</td>
+                            </tr>
+                       
+                    {% endif %}
+                </tbody>
+            </table>
+        </div>
+
+        <div class="table-container">
+           
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Common Name</th>
+                        <th>Scientific Name</th>
+                        <th>Other Name</th>
+                        <th>Cycle</th>
+                        <th>Watering</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% if context1 %}
+                        <tr>
+                            <td>{{ context1.common_name }}</td>
+                            <td>{{ context1.scientific_name }}</td>
+                            <td>{{ context1.other_name }}</td>
+                            <td>{{ context1.cycle }}</td>
+                            <td>{{ context1.watering }}</td>
+                        </tr>
+                    {% endif %}
+                </tbody>
+            </table>
+        </div>
+
+        <div class="table-container">
+           
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Common Name</th>
+                        <th>Scientific Name</th>
+                        <th>Other Name</th>
+                        <th>Cycle</th>
+                        <th>Watering</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% if context2 %}
+                        <tr>
+                            <td>{{ context2.common_name }}</td>
+                            <td>{{ context2.scientific_name }}</td>
+                            <td>{{ context2.other_name }}</td>
+                            <td>{{ context2.cycle }}</td>
+                            <td>{{ context2.watering }}</td>
+                        </tr>
+                    {% endif %}
+                </tbody>
+            </table>
+        </div>
+
+        <div class="image-container">
+            {% if context %}
+                
+                    <img src="{{ context.image_links.thumbnail }}" alt="Thumbnail Image">
+                    
+                
+            {% endif %}
+        </div>
+
+
+        
     </div>
 
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>

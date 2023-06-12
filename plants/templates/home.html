@@ -4,6 +4,7 @@
 <style>
   .jumbotron {
     background: url("https://source.unsplash.com/1200x400/?plants") center/cover;
+    background-color: rgba(0, 0, 0, 0.5); /* Added background color with reduced opacity */
     color: #fff;
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.6);
   }
@@ -14,15 +15,34 @@
     border-radius: 10px;
   }
 
-  .testimonial {
+  .about-section {
     background-color: #f9f9f9;
     padding: 30px;
     border-radius: 10px;
   }
 
-  .testimonial .testimonial-img {
-    border-radius: 50%;
+  .about-section h2 {
     margin-bottom: 20px;
+  }
+
+  .website-details-card {
+    border: none;
+    border-radius: 10px;
+    background-color: #f9f9f9;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    text-align: center;
+  }
+
+  .website-details-card i {
+    font-size: 48px;
+    margin-bottom: 10px;
+    color: #007bff;
+  }
+
+  .website-details-card h3 {
+    font-size: 24px;
+    margin-bottom: 10px;
   }
 
   .footer {
@@ -40,48 +60,49 @@
   </div>
 
   <div class="row">
-    <div class="col-lg-6 mb-4">
+    <div class="col text-center">
       <div class="scan-section">
         <h2>Scan Plant</h2>
         <p>Scan your plant using our AI-powered app to get detailed information and contribute to the environment.</p>
         <a href="{% url 'scan' %}" class="btn btn-primary">Start Scanning</a>
       </div>
+      <hr>
+      <br>
     </div>
-    <div class="col-lg-6 mb-4">
+  </div>
+
+  <div class="row">
+    <div class="col text-center">
       <div class="about-section">
         <h2>About Us</h2>
         <p>We are a team of plant enthusiasts dedicated to preserving and understanding the botanical world through advanced technology.</p>
       </div>
+      <hr>
+      <br>
     </div>
   </div>
 
-  <div class="testimonial">
-    <h2>Testimonials</h2>
-    <div id="testimonialsCarousel" class="carousel slide" data-bs-ride="carousel">
-      <div class="carousel-inner">
-        <div class="carousel-item active">
-          <div class="testimonial-content">
-            <img src="https://via.placeholder.com/80" class="testimonial-img" alt="Testimonial 1">
-            <p class="testimonial-text">"Plant AI has been a game-changer in my gardening journey. It has helped me identify and take care of various plant species with ease."</p>
-            <h5 class="testimonial-author">John Doe</h5>
-          </div>
-        </div>
-        <div class="carousel-item">
-          <div class="testimonial-content">
-            <img src="https://via.placeholder.com/80" class="testimonial-img" alt="Testimonial 2">
-            <p class="testimonial-text">"The Plant AI app has made plant identification effortless and enjoyable. It's an incredible tool for plant lovers!"</p>
-            <h5 class="testimonial-author">Jane Smith</h5>
-          </div>
-        </div>
+  <div class="row">
+    <div class="col-lg-4 mb-4">
+      <div class="website-details-card">
+        <i class="bi bi-search"></i>
+        <h3>Scan Plants</h3>
+        <p>Use our AI-powered app to scan plants and get detailed information about them.</p>
       </div>
-      <a class="carousel-control-prev" href="#testimonialsCarousel" role="button" data-bs-slide="prev">
-        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-        <span class="visually-hidden">Previous</span>
-      </a>
-      <a class="carousel-control-next" href="#testimonialsCarousel" role="button" data-bs-slide="next">
-        <span class="carousel-control-next-icon" aria-hidden="true"></span>
-        <span class="visually-hidden">Next</span>
-      </a>
+    </div>
+    <div class="col-lg-4 mb-4">
+      <div class="website-details-card">
+        <i class="bi bi-bookmark-check"></i>
+        <h3>Save Favorites</h3>
+        <p>Save your favorite plant species for easy access and reference.</p>
+      </div>
+    </div>
+    <div class="col-lg-4 mb-4">
+      <div class="website-details-card">
+        <i class="bi bi-cloud-upload"></i>
+        <h3>Contribute</h3>
+        <p>Contribute to the environment by sharing your plant observations and data.</p>
+      </div>
     </div>
   </div>
 </div>
