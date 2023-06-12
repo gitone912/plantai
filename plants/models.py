@@ -17,13 +17,17 @@ from django.contrib.auth.models import User
 # User.user_permissions.related_name = 'user_set_custom_permissions'
 
 
-class Plant(models.Model):
-    name = models.CharField(max_length=100)
-    description = models.TextField()
-    image = models.ImageField(upload_to='plant_images/')
-    scientific_name = models.CharField(max_length=100)
-    watering_instructions = models.TextField()
-    disinfection_instructions = models.TextField()
+class Plant_details(models.Model):
+    common_names = models.CharField(max_length=255,null=True, blank=True)
+    edible_parts = models.TextField(null=True, blank=True)
+    gbif_id = models.IntegerField(null=True, blank=True)
+    name_authority = models.CharField(max_length=255,null=True, blank=True)
+    propagation_methods = models.TextField(null=True, blank=True)
+    synonyms = models.TextField(null=True, blank=True)
+    taxonomy = models.TextField(null=True, blank=True)
+    url = models.URLField(null=True, blank=True)
+    wiki_description = models.TextField(null=True, blank=True)
+    wiki_image = models.URLField(null=True, blank=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
 
     def __str__(self):

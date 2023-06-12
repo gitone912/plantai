@@ -1,7 +1,12 @@
+from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.contrib.auth import login, authenticate
 from django.contrib.auth.forms import UserCreationForm
-from .models import Plant
+from .models import Plant_details as Plant
+import base64
+import requests
+
+from django.shortcuts import redirect, render
 
 def home(request):
     return render(request, 'home.html')
@@ -29,24 +34,95 @@ def user_login(request):
             return render(request, 'login.html', {'error_message': error_message})
     return render(request, 'login.html')
 
+
+
+
+
+def encode_file(file):
+    return base64.b64encode(file.read()).decode("ascii")
+
+
+def identify_plant(file_names):
+    params = {
+        "images": [encode_file(img) for img in file_names],
+        "latitude": 49.1951239,
+        "longitude": 16.6077111,
+        "datetime": 1582830233,
+        "modifiers": ["crops_fast", "similar_images"],
+        "plant_language": "en",
+        "plant_details": [
+            "common_names",
+            "edible_parts",
+            "gbif_id",
+            "name_authority",
+            "propagation_methods",
+            "synonyms",
+            "taxonomy",
+            "url",
+            "wiki_description",
+            "wiki_image",
+        ],
+    }
+
+    headers = {
+        "Content-Type": "application/json",
+        "Api-Key": "jfv3A4l2CwtF2Bs5b7XSoz5DdgDeKFqNnKSS7UwyGnnGozcvF7",
+    }
+
+    response = requests.post("https://api.plant.id/v2/identify", json=params, headers=headers)
+
+    return response.json()
+
+
 def plant_scan(request):
     if request.method == 'POST':
-        # Process the scanned plant image and retrieve plant information using AI model
-        name = "Sample Plant"
-        description = "This is a sample plant."
-        scientific_name = "Plantus sampleus"
-        watering_instructions = "Water the plant once a week."
-        disinfection_instructions = "Disinfect the plant every month."
-        image_url = "https://example.com/sample-plant.jpg"
+        # Retrieve the uploaded image file
+        image_file = request.FILES['plant-image']
 
-        # Create a new Plant instance with the retrieved information
-        plant = Plant(name=name, description=description, scientific_name=scientific_name,
-                      watering_instructions=watering_instructions, disinfection_instructions=disinfection_instructions,
-                      image_url=image_url, user=request.user)
-        plant.save()
+        # Identify the plant based on the uploaded image
+        identified_plant = identify_plant([image_file])
 
-        return redirect('plant_save')
+        if identified_plant.get('suggestions'):
+            # Retrieve the identified plant details
+            plant_details = identified_plant['suggestions'][0]['plant_details']
+            
+            # Retrieve the relevant plant information
+            common_names = plant_details.get('common_names')
+            edible_parts = plant_details.get('edible_parts')
+            gbif_id = plant_details.get('gbif_id')
+            name_authority = plant_details.get('name_authority')
+            propagation_methods = plant_details.get('propagation_methods')
+            synonyms = plant_details.get('synonyms')
+            taxonomy = plant_details.get('taxonomy')
+            url = plant_details.get('url')
+            wiki_description = plant_details.get('wiki_description')
+            wiki_image = plant_details.get('wiki_image')
+
+
+            # Save the plant information to the database
+            plant = Plant(
+                common_names=common_names,
+                edible_parts=edible_parts,
+                gbif_id=gbif_id,
+                name_authority=name_authority,
+                propagation_methods=propagation_methods,
+                synonyms=synonyms,
+                taxonomy=taxonomy,
+                url=url,
+                wiki_description=wiki_description,
+                wiki_image=wiki_image,
+                user=request.user
+            )
+
+            plant.save()
+
+            return redirect('plant_save')
+        else:
+            # Handle the case when the plant cannot be identified
+            return HttpResponse('Plant identification failed.')
+
     return render(request, 'scan.html')
+
 
 def plant_save(request):
     if request.method == 'POST':
