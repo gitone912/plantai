@@ -28,7 +28,8 @@ class Plant_details(models.Model):
     url = models.URLField(null=True, blank=True)
     wiki_description = models.TextField(null=True, blank=True)
     wiki_image = models.URLField(null=True, blank=True)
+    real_image = models.ImageField(upload_to='real_images/',null=True, blank=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
 
     def __str__(self):
-        return self.name
+        return self.common_names

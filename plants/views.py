@@ -100,19 +100,54 @@ def plant_scan(request):
 
 
             # Save the plant information to the database
+            try:
+                if len(common_names) == 0 and common_names is not None:
+                    common_names_str = common_names[0]
+                elif common_names is None:
+                    common_names_str = "None"
+                else:
+                    common_names_str = ', '.join(common_names)
+            except Exception:
+                common_names_str = ""
+
+            try:
+                if len(edible_parts) == 0 and edible_parts is not None:
+                    edible_parts_str = edible_parts[0]
+                elif edible_parts is None:
+                    edible_parts_str = "None"
+                else:
+                    edible_parts_str = ', '.join(edible_parts)
+            except Exception:
+                edible_parts_str = ""
+
+            try:
+                if len(propagation_methods) == 0 and propagation_methods is not None:
+                    propagation_methods_str = propagation_methods[0]
+                elif propagation_methods is None:
+                    propagation_methods_str = "None"
+                else:
+                    propagation_methods_str = ', '.join(propagation_methods)
+            except Exception:
+                propagation_methods_str = ""
+
+            taxonomy_str = ', '.join([f"{key}: {value}" for key, value in taxonomy.items()])
+            wiki_description_str = ', '.join([f"{key}: {value}" for key, value in wiki_description.items()])
+
             plant = Plant(
-                common_names=common_names,
-                edible_parts=edible_parts,
+                common_names=common_names_str,
+                edible_parts=edible_parts_str,
                 gbif_id=gbif_id,
                 name_authority=name_authority,
-                propagation_methods=propagation_methods,
+                propagation_methods=propagation_methods_str,
                 synonyms=synonyms,
-                taxonomy=taxonomy,
+                taxonomy=taxonomy_str,
                 url=url,
-                wiki_description=wiki_description,
-                wiki_image=wiki_image,
+                wiki_description=wiki_description_str,
+                wiki_image=wiki_image['value'],
+                real_image=image_file,
                 user=request.user
             )
+
 
             plant.save()
 
@@ -125,11 +160,13 @@ def plant_scan(request):
 
 
 def plant_save(request):
-    if request.method == 'POST':
-        # Save the scanned plant information to the user's profile
-        # Associate the scanned plant with the currently logged in user
-        return redirect('dashboard')
-    return render(request, 'save.html')
+    user_plants = Plant.objects.filter(user=request.user)
+
+    context = {
+        'user_plants': user_plants,
+    }
+    
+    return render(request, 'save.html',context)
 
 def contribution_system(request):
     # Retrieve information about planting locations, growth details, and green points
@@ -140,10 +177,7 @@ def contribution_system(request):
     return render(request, 'contribution.html', {'locations': locations, 'growth_details': growth_details,
                                                  'green_points': green_points})
 
-def dashboard(request):
-    # Retrieve the user's saved plants and their status
-    saved_plants = Plant.objects.filter(user=request.user)
-    return render(request, 'dashboard.html', {'saved_plants': saved_plants})
+
 
 def tree_map(request):
     # Retrieve tree locations and display them on a map
@@ -151,6 +185,73 @@ def tree_map(request):
     return render(request, 'treemap.html', {'tree_locations': tree_locations})
 
 def plant_library(request):
-    # Retrieve plant data and videos for user knowledge
-    plants = Plant.objects.all()
-    return render(request, 'library.html', {'plants': plants})
+    if request.method == 'POST':
+        query = request.POST.get('query')
+        api_key = 'sk-JOi7648733bf8684b1232'
+        url = f'https://perenual.com/api/species-list?key={api_key}&q={query}'
+
+        try:
+            response = requests.get(url)
+            data = response.json()
+            json_data = data['data'][0]
+            json_data2 = data['data'][1]
+            json_data3 = data['data'][2]
+            # context = {'species_list': species_list}
+            print(json_data)
+            context = {
+        'common_name': json_data['common_name'],
+        'scientific_name': json_data['scientific_name'],
+        'other_name': json_data['other_name'],
+        'cycle': json_data['cycle'],
+        'watering': json_data['watering'],
+        'sunlight': json_data['sunlight'],
+        'image_links': {
+            'original_url': json_data['default_image']['original_url'],
+            'regular_url': json_data['default_image']['regular_url'],
+            'medium_url': json_data['default_image']['medium_url'],
+            'small_url': json_data['default_image']['small_url'],
+            'thumbnail': json_data['default_image']['thumbnail']
+        }}
+            context1 = {
+            'common_name': json_data['common_name'],
+            'scientific_name': json_data['scientific_name'],
+            'other_name': json_data['other_name'],
+            'cycle': json_data['cycle'],
+            'watering': json_data['watering'],
+            'sunlight': json_data['sunlight'],
+            'image_links': {
+                'original_url': json_data['default_image']['original_url'],
+                'regular_url': json_data['default_image']['regular_url'],
+                'medium_url': json_data['default_image']['medium_url'],
+                'small_url': json_data['default_image']['small_url'],
+                'thumbnail': json_data['default_image']['thumbnail']
+            }}
+            context2 = {
+            'common_name': json_data['common_name'],
+            'scientific_name': json_data['scientific_name'],
+            'other_name': json_data['other_name'],
+            'cycle': json_data['cycle'],
+            'watering': json_data['watering'],
+            'sunlight': json_data['sunlight'],
+            'image_links': {
+                'original_url': json_data['default_image']['original_url'],
+                'regular_url': json_data['default_image']['regular_url'],
+                'medium_url': json_data['default_image']['medium_url'],
+                'small_url': json_data['default_image']['small_url'],
+                'thumbnail': json_data['default_image']['thumbnail']
+            }
+        }
+        except requests.exceptions.RequestException as e:
+            # Handle API request errors
+            context = {'error_message': 'Failed to retrieve species data.'}
+    else:
+        context = {}
+        context1 = {}
+        context2 = {}
+        
+
+    return render(request, 'library.html', {
+        'context': context,
+        'context1': context1,
+        'context2': context2
+    })

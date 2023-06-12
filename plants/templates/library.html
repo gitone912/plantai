@@ -1,13 +1,129 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<div class="container">
-  <h1>Plant Library</h1>
-  <h2>Plants</h2>
-  <ul>
-    {% for plant in plants %}
-      <li>{{ plant.name }}</li>
-    {% endfor %}
-  </ul>
-</div>
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Plant Library</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <style>
+        .image-container {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .image-container img {
+            width: 150px;
+            height: 150px;
+            object-fit: cover;
+            margin-right: 10px;
+        }
+
+        .table-container {
+            margin-bottom: 50px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Search Results</h1>
+        
+        <div class="table-container">
+            <h2>Table 1</h2>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Common Name</th>
+                        <th>Scientific Name</th>
+                        <th>Other Name</th>
+                        <th>Cycle</th>
+                        <th>Watering</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for species in species_list %}
+                        <tr>
+                            <td>{{ species.common_name }}</td>
+                            <td>{{ species.scientific_name }}</td>
+                            <td>{{ species.other_name }}</td>
+                            <td>{{ species.cycle }}</td>
+                            <td>{{ species.watering }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        
+        <div class="table-container">
+            <h2>Table 2</h2>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Common Name</th>
+                        <th>Scientific Name</th>
+                        <th>Other Name</th>
+                        <th>Cycle</th>
+                        <th>Watering</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for species in species_list %}
+                        <tr>
+                            <td>{{ species.common_name }}</td>
+                            <td>{{ species.scientific_name }}</td>
+                            <td>{{ species.other_name }}</td>
+                            <td>{{ species.cycle }}</td>
+                            <td>{{ species.watering }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        
+        <div class="table-container">
+            <h2>Table 3</h2>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Common Name</th>
+                        <th>Scientific Name</th>
+                        <th>Other Name</th>
+                        <th>Cycle</th>
+                        <th>Watering</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for species in species_list %}
+                        <tr>
+                            <td>{{ species.common_name }}</td>
+                            <td>{{ species.scientific_name }}</td>
+                            <td>{{ species.other_name }}</td>
+                            <td>{{ species.cycle }}</td>
+                            <td>{{ species.watering }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <div class="image-container">
+            {% for species in species_list %}
+                <img src="{{ species.image_links.thumbnail }}" alt="Thumbnail Image">
+            {% endfor %}
+        </div>
+
+        <form method="post" action="{% url 'plant_library' %}">
+            {% csrf_token %}
+            <input type="text" name="query" placeholder="Enter a search query">
+            <button type="submit">Search</button>
+        </form>
+    </div>
+
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+</body>
+</html>
+
 {% endblock %}

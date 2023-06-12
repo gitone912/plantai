@@ -4,15 +4,20 @@
 <div class="container">
   <h1>Save Plant</h1>
   <h2>Plant Information</h2>
-  <p>Name: Sample Plant</p>
-  <p>Description: This is a sample plant.</p>
-  <p>Scientific Name: Plantus sampleus</p>
-  <p>Watering Instructions: Water the plant once a week.</p>
-  <p>Disinfection Instructions: Disinfect the plant every month.</p>
-  <img src="https://example.com/sample-plant.jpg" alt="Sample Plant" class="img-fluid">
-  <form method="POST" action="{% url 'plant_save' %}">
-    {% csrf_token %}
-    <button type="submit" class="btn btn-primary">Save</button>
-  </form>
+  {% for plant in user_plants %}
+  <p>Name: {{ plant.common_names }}</p>
+  <p>Description: {{ plant.wiki_description }}</p>
+  <p>Scientific Name: {{ plant.name_authority }}</p>
+  <p>Gbif id : {{plant.gbif_id}} </p>
+  <p>propagation_methods : {{plant.propagation_methods}} </p>
+
+  <!-- Add other plant attributes here -->
+  <a href="{{plant.url}}">search on wikipedia</a>
+  <br>
+  <img src="{{ plant.wiki_image }}" alt="{{ plant.common_names }}" class="img-fluid">
+  
+    <button type="" class="btn btn-primary">read more</button>
+  
+  {% endfor %}
 </div>
 {% endblock %}
