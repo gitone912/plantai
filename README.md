@@ -4,31 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <title>README - Django App</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      margin: 40px;
-    }
-    
-    h1 {
-      color: #333;
-    }
-    
-    h2 {
-      color: #555;
-    }
-    
-    p {
-      margin-bottom: 20px;
-    }
-    
-    code {
-      font-family: Consolas, monospace;
-      background-color: #f8f8f8;
-      padding: 2px 4px;
-      color: #333;
-    }
-  </style>
+
 </head>
 <body>
   <h1>Django App</h1>
