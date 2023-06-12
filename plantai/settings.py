@@ -37,7 +37,8 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    "scanner.apps.ScannerConfig",
+    "plants"
+    
 ]
 
 MIDDLEWARE = [
@@ -55,7 +56,7 @@ ROOT_URLCONF = "plantai.urls"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [BASE_DIR / "scanner/templates"],
+        "DIRS": [BASE_DIR / "plants/templates"],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
