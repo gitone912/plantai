@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container">
+  <h1>Scan Plant</h1>
+  <form method="POST" action="{% url 'scan' %}" enctype="multipart/form-data">
+    {% csrf_token %}
+    <div class="form-group">
+      <label for="plant-image">Upload Plant Image</label>
+      <input type="file" class="form-control-file" id="plant-image" name="plant-image" required>
+    </div>
+    <button type="submit" class="btn btn-primary">Scan</button>
+  </form>
+</div>
+{% endblock %}
